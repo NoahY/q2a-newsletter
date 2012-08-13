@@ -58,14 +58,13 @@
 					qa_opt('news_plugin_max_q',(int)qa_post_text('news_plugin_max_q'));
 					qa_opt('news_plugin_max_a',(int)qa_post_text('news_plugin_max_a'));
 					qa_opt('news_plugin_max_c',(int)qa_post_text('news_plugin_max_c'));
+					qa_opt('news_plugin_include_votes',(int)qa_post_text('news_plugin_include_votes'));
 					
-					qa_opt('news_plugin_static',(bool)qa_post_text('news_plugin_static'));
 					qa_opt('news_plugin_pdf',(bool)qa_post_text('news_plugin_pdf'));
 					qa_opt('news_plugin_loc',qa_post_text('news_plugin_loc'));
 					qa_opt('news_plugin_loc_pdf',qa_post_text('news_plugin_loc_pdf'));
 
 					qa_opt('news_plugin_send',(bool)qa_post_text('news_plugin_send'));
-					qa_opt('news_plugin_send_time',(bool)qa_post_text('news_plugin_send_time'));
 					qa_opt('news_plugin_send_cron',(bool)qa_post_text('news_plugin_send_cron'));
 					qa_opt('news_plugin_send_days',(int)qa_post_text('news_plugin_send_days'));
 					
@@ -138,7 +137,7 @@
 			$fields[] = array(
 				'label' => 'Show votes',
 				'tags' => 'NAME="news_plugin_include_votes"',
-				'value' => qa_opt('news_plugin_template_votes'),
+				'value' => qa_opt('news_plugin_include_votes'),
 				'type' => 'checkbox',
 			);
 
