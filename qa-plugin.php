@@ -196,7 +196,7 @@
 				'newsletter','1'
 				)
 			);
-			require_once QA_INCLUDE_DIR.'qa-class.phpmailer.php';
+			require_once QA_INCLUDE_DIR.'qa-app-emails.php';
 
 			$handles = qa_userids_to_handles($users);
 			
