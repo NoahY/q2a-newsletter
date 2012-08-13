@@ -28,7 +28,7 @@
 		qa_register_plugin_phrases('qa-news-lang-*.php', 'newsletter');
 
 
-		function qa_news_plugin_createNewsletter($return=false,$send=false) {
+		function qa_news_plugin_createNewsletter($send=false) {
 
 			$news = qa_opt('news_plugin_template');
 			
@@ -155,20 +155,18 @@
 			$news = str_replace('[days]',qa_opt('news_plugin_send_days'),$news);
 			$news = str_replace('[profile-url]',qa_path('my-profile'),$news);
 			
-			qa_opt('news_plugin_send_last',time());
-			
 			error_log('Q2A Newsletter Created on '.date('M j, Y \a\t H\:i\:s'));
-			
-			if($return)
-				return $news;
 			
 			file_put_contents(qa_opt('news_plugin_loc'),$news);
 			
 			if(qa_opt('news_plugin_pdf'))
 				qa_news_plugin_create_pdf();
 
-			if($send)	
+			if($send) {
 				qa_news_plugin_send_newsletter($news);
+				qa_opt('news_plugin_send_last',time());
+				return 'Newsletter Sent';
+			}
 
 			return 'Newsletter Created';
 		    

@@ -79,7 +79,9 @@
 					qa_opt('news_plugin_template_comment',qa_post_text('news_plugin_template_comment'));
 					qa_opt('news_plugin_template_votes',qa_post_text('news_plugin_template_votes'));
 					
-					if(qa_clicked('news_plugin_process'))
+					if(qa_clicked('news_plugin_send'))
+						$ok = qa_news_plugin_createNewsletter(true);
+					else if(qa_clicked('news_plugin_process'))
 						$ok = qa_news_plugin_createNewsletter();
 					else
 						$ok = qa_lang('admin/options_saved');
@@ -270,6 +272,10 @@
 					array(
 						'label' => 'Process',
 						'tags' => 'NAME="news_plugin_process"',
+					),
+					array(
+						'label' => 'Send',
+						'tags' => 'NAME="news_plugin_send"',
 					),
                     array(
                         'label' => qa_lang_html('admin/reset_options_button'),

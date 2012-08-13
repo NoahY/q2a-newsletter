@@ -14,7 +14,7 @@
 			else if($requestlower && $requestlower === qa_opt('news_plugin_request')) {
 				// send on cron
 				if(qa_opt('news_plugin_send') && qa_get('cron') == qa_opt('news_plugin_cron_rand') && time() >= qa_opt('news_plugin_send_last')+(23*60*60)) { // minumum cron interval is 23 hours
-					qa_news_plugin_createNewsletter(false,true);
+					qa_news_plugin_createNewsletter(true);
 					return false;
 				}
 				else if (qa_get('cron') == qa_opt('news_plugin_cron_rand')) {
