@@ -38,9 +38,8 @@ Static Files
 
 To output static files you need to find a location that is writeable by PHP.  The default is to write to the plugin dir itself, which is probably not writeable.  On Linux, something like this works:
 
-  touch newsletter.html
-  touch newsletter.pdf
-  chmod 777 newsletter.html newsletter.pdf
+  touch newsletter.html newsletter.pdf
+  chmod 666 newsletter.html newsletter.pdf
 
 ------------
 PDF File

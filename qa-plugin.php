@@ -35,10 +35,6 @@
 			// static replacements
 			
 			$news = str_replace('[css]',qa_opt('news_plugin_css'),$news);
-
-			$qhtml = '';
-			$ahtml = '';
-			$chtml = '';
 			
 			if(qa_opt('news_plugin_max_q') > 0) {
 				$selectspec="SELECT postid, BINARY title AS title, BINARY content AS content, format, netvotes FROM ^posts WHERE type='Q' AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= created ORDER BY netvotes DESC, created ASC LIMIT ".(int)qa_opt('news_plugin_max_q');
@@ -63,7 +59,7 @@
 					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
 					$one = str_replace('[voting]',$votes,$one);
 					 
-					$qhtml .= $one;
+					$qhtml[] = $one;
 				}
 			}
 			if(qa_opt('news_plugin_max_a') > 0) {
@@ -93,7 +89,7 @@
 					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
 					$one = str_replace('[voting]',$votes,$one);
 					 
-					$ahtml .= $one;
+					$ahtml[] = $one;
 				}
 			}
 			if(qa_opt('news_plugin_max_c') > 0) {
@@ -134,12 +130,12 @@
 					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
 					$one = str_replace('[voting]',$votes,$one);
 					 
-					$chtml .= $one;
+					$chtml[]= $one;
 				}
 			}
-			$news = str_replace('[questions]',$qhtml,$news);
-			$news = str_replace('[answers]',$ahtml,$news);
-			$news = str_replace('[comments]',$chtml,$news);
+			$news = str_replace('[questions]',implode('<hr class="inner">',$qhtml),$news);
+			$news = str_replace('[answers]',implode('<hr class="inner">',$ahtml),$news);
+			$news = str_replace('[comments]',implode('<hr class="inner">',$chtml),$news);
 			
 			// misc subs
 			

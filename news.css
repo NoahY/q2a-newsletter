@@ -40,6 +40,11 @@ hr {
 	clear:both;
 }
 
+hr.inner {
+	color: #CCC;
+	background-color: #CCC;
+}
+
 .parent-ref {
 	font-style:italic;
 }
