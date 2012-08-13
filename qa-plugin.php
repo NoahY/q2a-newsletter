@@ -36,12 +36,14 @@
 			
 			$news = str_replace('[css]',qa_opt('news_plugin_css'),$news);
 			
+				$lastdate = time()-qa_opt('news_plugin_send_days')*24*60*60;
+			
 			if(qa_opt('news_plugin_max_q') > 0) {
-				$selectspec="SELECT postid, BINARY title AS title, BINARY content AS content, format, netvotes, userid FROM ^posts WHERE type='Q' AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= created ORDER BY netvotes DESC, created ASC LIMIT ".(int)qa_opt('news_plugin_max_q');
+				$selectspec="SELECT postid, BINARY title AS title, BINARY content AS content, format, netvotes, userid FROM ^posts WHERE type='Q' AND FROM_UNIXTIME(#) <= created ORDER BY netvotes DESC, created ASC LIMIT ".(int)qa_opt('news_plugin_max_q');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
-					qa_opt('news_plugin_send_days')
+					$lastdate
 				);
 				
 				while ( ($post=qa_db_read_one_assoc($sub,true)) !== null ) {
@@ -68,11 +70,11 @@
 				}
 			}
 			if(qa_opt('news_plugin_max_a') > 0) {
-				$selectspec="SELECT a.postid AS postid, a.parentid AS parentid, BINARY a.content AS content, a.format AS format, a.netvotes AS netvotes, a.userid as userid, q.title AS qtitle FROM ^posts AS q, ^posts AS a WHERE a.type='A' AND q.postid=a.parentid AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= a.created ORDER BY a.netvotes DESC, a.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
+				$selectspec="SELECT a.postid AS postid, a.parentid AS parentid, BINARY a.content AS content, a.format AS format, a.netvotes AS netvotes, a.userid as userid, q.title AS qtitle FROM ^posts AS q, ^posts AS a WHERE a.type='A' AND q.postid=a.parentid AND FROM_UNIXTIME(#) <= a.created ORDER BY a.netvotes DESC, a.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
-					qa_opt('news_plugin_send_days')
+					$lastdate
 				);
 				
 				while ( ($post=qa_db_read_one_assoc($sub,true)) !== null ) {
@@ -104,11 +106,11 @@
 				}
 			}
 			if(qa_opt('news_plugin_max_c') > 0) {
-				$selectspec="SELECT c.postid AS postid, c.parentid AS parentid, BINARY c.content AS content, c.format AS format, c.netvotes AS netvotes, c.userid as userid, p.title AS ptitle, p.parentid AS gpostid, g.title AS gtitle FROM ^posts AS c INNER JOIN ^posts AS p ON c.type='C' AND p.postid=c.parentid AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= c.created LEFT JOIN ^posts AS g ON g.postid=p.parentid AND g.type='Q' ORDER BY c.netvotes DESC, c.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
+				$selectspec="SELECT c.postid AS postid, c.parentid AS parentid, BINARY c.content AS content, c.format AS format, c.netvotes AS netvotes, c.userid as userid, p.title AS ptitle, p.parentid AS gpostid, g.title AS gtitle FROM ^posts AS c INNER JOIN ^posts AS p ON c.type='C' AND p.postid=c.parentid AND FROM_UNIXTIME(#) <= c.created LEFT JOIN ^posts AS g ON g.postid=p.parentid AND g.type='Q' ORDER BY c.netvotes DESC, c.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
-					qa_opt('news_plugin_send_days')
+					$lastdate
 				);
 				
 				while ( ($post=qa_db_read_one_assoc($sub,true)) !== null ) {
@@ -165,7 +167,7 @@
 
 			$news = str_replace('[site-title]',qa_opt('site_title'),$news);
 			$news = str_replace('[site-url]',qa_opt('site_url'),$news);
-			$news = str_replace('[last-date]',date('M j, Y',qa_opt('news_plugin_send_last')),$news);
+			$news = str_replace('[last-date]',date('M j, Y',$lastdate),$news);
 			$news = str_replace('[date]',date('M j, Y'),$news);
 			$news = str_replace('[days]',qa_opt('news_plugin_send_days'),$news);
 			$news = str_replace('[profile-url]',qa_path('my-profile'),$news);
