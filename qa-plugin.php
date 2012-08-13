@@ -28,7 +28,7 @@
 		qa_register_plugin_phrases('qa-news-lang-*.php', 'newsletter');
 
 
-		function qa_news_plugin_createNewsletter($return=false,$send=true) {
+		function qa_news_plugin_createNewsletter($return=false,$send=false) {
 
 			$news = qa_opt('news_plugin_template');
 			
@@ -43,29 +43,27 @@
 			if(qa_opt('news_plugin_max_q') > 0) {
 				$selectspec="SELECT postid, BINARY title AS title, BINARY content AS content, format, netvotes FROM ^posts WHERE type='Q' AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= created ORDER BY netvotes DESC, created ASC LIMIT ".(int)qa_opt('news_plugin_max_q');
 				
-				$qsub = qa_db_query_sub(
+				$sub = qa_db_query_sub(
 					$selectspec,
 					qa_opt('news_plugin_send_days')
 				);
 				
-				while ( ($q=qa_db_read_one_assoc($qsub,true)) !== null ) {
+				while ( ($post=qa_db_read_one_assoc($sub,true)) !== null ) {
 					$qcontent = '';
-					if(!empty($q['content'])) {
-						$viewer=qa_load_viewer($q['content'], $q['format']);
-						$qcontent = $viewer->get_html($q['content'], $q['format'], array());
+					if(!empty($post['content'])) {
+						$viewer=qa_load_viewer($post['content'], $post['format']);
+						$content = $viewer->get_html($post['content'], $post['format'], array());
 					}
 
-					$oneq = str_replace('[question-title]',$q['title'],qa_opt('news_plugin_template_question'));
-					$oneq = str_replace('[anchor]','question'.$q['postid'],$oneq);
-					$oneq = str_replace('[url]',qa_html(qa_q_request($q['postid'],$q['title'])),$oneq);
-					$oneq = str_replace('[question]',$qcontent,$oneq);
+					$one = str_replace('[question-title]',$post['title'],qa_opt('news_plugin_template_question'));
+					$one = str_replace('[anchor]','question'.$post['postid'],$one);
+					$one = str_replace('[url]',qa_html(qa_q_request($post['postid'],$post['title'])),$one);
+					$one = str_replace('[question]',$content,$one);
 					
-					$votes = str_replace('[number]',$q['netvotes'],qa_opt('news_plugin_template_votes'));
-					$voting = (abs($q['netvotes'])==1) ? qa_lang_html_sub('main/1_vote', $votes, '1') : qa_lang_html_sub('main/x_votes', $votes);
-					
-					$oneq = str_replace('[voting]',$voting,$oneq);
+					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
+					$one = str_replace('[voting]',$votes,$one);
 					 
-					$qhtml .= $oneq;
+					$qhtml .= $one;
 				}
 			}
 			if(qa_opt('news_plugin_max_a') > 0) {
@@ -92,9 +90,8 @@
 					$one = str_replace('[anchor]','answer'.$post['postid'],$one);
 					$one = str_replace('[answer]',$content,$one);
 
-					$votes = str_replace('[number]',$post['netvotes'],qa_opt('news_plugin_template_votes'));
-					$voting = (abs($post['netvotes'])==1) ? qa_lang_html_sub('main/1_vote', $votes, '1') : qa_lang_html_sub('main/x_votes', $votes);
-					$one = str_replace('[voting]',$voting,$one);
+					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
+					$one = str_replace('[voting]',$votes,$one);
 					 
 					$ahtml .= $one;
 				}
@@ -134,9 +131,8 @@
 					$one = str_replace('[anchor]','comment'.$post['postid'],$one);
 					$one = str_replace('[comment]',$content,$one);
 
-					$votes = str_replace('[number]',$post['netvotes'],qa_opt('news_plugin_template_votes'));
-					$voting = (abs($post['netvotes'])==1) ? qa_lang_html_sub('main/1_vote', $votes, '1') : qa_lang_html_sub('main/x_votes', $votes);
-					$one = str_replace('[voting]',$voting,$one);
+					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
+					$one = str_replace('[voting]',$votes,$one);
 					 
 					$chtml .= $one;
 				}
@@ -166,7 +162,7 @@
 			
 			if(qa_opt('news_plugin_pdf'))
 				qa_news_plugin_create_pdf();
-			
+
 			if($send)	
 				qa_news_plugin_send_newsletter($news);
 

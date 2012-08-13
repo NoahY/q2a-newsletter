@@ -51,6 +51,10 @@ hr {
 	font-weight:bold;
 }
 
+.question,.answer,.comment {
+	clear:both;
+}
+
 .question-content,.answer-content,.comment-content {
 	margin-top:20px;
 }

@@ -147,15 +147,9 @@
 			);
 
 			$fields[] = array(
-				'label' => 'Create Static Newsletter',
-				'note' => '<i>Create static page when sending newsletter.  If this is unchecked, accessing the news page will recreate the newsletter on every view</i>',
-				'tags' => 'onclick="if(this.checked) $(\'#news_plugin_loc\').show(); else $(\'#news_plugin_loc\').hide();" NAME="news_plugin_static"',
-				'value' => qa_opt('news_plugin_static'),
-				'type' => 'checkbox',
-			);
-			$fields[] = array(
-				'value' => '<span id="news_plugin_loc" style="display:'.(qa_opt('news_plugin_static')?'block':'none').'">Location (must be writable): <input name="news_plugin_loc" value="'.qa_opt('news_plugin_loc').'"></span>',
-				'type' => 'static',
+				'label' => 'Newsletter Location (must be writable)',
+				'tags' => 'NAME="news_plugin_loc"',
+				'value' => qa_opt('news_plugin_loc'),
 			);
 			$fields[] = array(
 				'type' => 'blank',
@@ -186,7 +180,7 @@
 			$cron_url = qa_opt('site_url').qa_opt('news_plugin_request').'?cron='.qa_opt('news_plugin_cron_rand');
 			
 			$fields[] = array(
-				'value' => '<div id="news_plugin_send_days" style="display:'.(qa_opt('news_plugin_send')?'block':'none').'">Interval after which cron will be called:&nbsp;<input name="news_plugin_send_days" value="'.qa_opt('news_plugin_send_days').'" size="3">&nbsp;days<br/><i>Set this to the interval at which you will run cron jobs (will show on the subscription page.  If you are not using cron jobs, select the auto-recreate checkbox below, and it will send on next page access.  If this is set to zero, the on-access recreate will not be triggered.</i><br/><br/><input type="checkbox" name="news_plugin_send_time" '.(qa_opt('news_plugin_send_time')?'checked':'').'> send on next access after above interval<br/><br/><input type="checkbox" name="news_plugin_send_cron" '.(qa_opt('news_plugin_send_cron')?'checked':'').'>send via cron url below<br/><span style="font-style:italic;">url is currently <a href="'.$cron_url.'">'.$cron_url.'</a><br/><i>As a security precaution, cron can only be run maximum once per day.  This url is reset when you reset the options for this plugin.</span></div>',
+				'value' => '<div id="news_plugin_send_days" style="display:'.(qa_opt('news_plugin_send')?'block':'none').'">Interval after which cron will be called:&nbsp;<input name="news_plugin_send_days" value="'.qa_opt('news_plugin_send_days').'" size="3">&nbsp;days<br/><i>Set this to the interval at which you will run cron jobs (will show on the user profile page).</i><br/><br/>The newsletter will be sent on accessing the cron url below<br/><span style="font-style:italic;">url is currently <a href="'.$cron_url.'">'.$cron_url.'</a><br/><i>As a security precaution, cron can only be run maximum once per day.  This url is reset when you reset the options for this plugin.</span></div>',
 				'type' => 'static',
 			);
 			$fields[] = array(
