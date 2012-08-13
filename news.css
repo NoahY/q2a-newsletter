@@ -22,6 +22,10 @@ body {
 	padding:0 20px;
 }
 
+h2 {
+	color:rgb(53, 76, 117);
+}
+
 .questions,.answers,.comments {
 	margin-left:20px;
 }
@@ -36,7 +40,6 @@ body {
     font-size:125%;
     text-align:center;
 }
-
 
 .parent-ref {
 	font-style:italic;
@@ -68,3 +71,7 @@ hr.inner {
 	background-color: #CCC;
 }
 
+.footer {
+	font-size:75%;
+	margin-top:20px;
+}
