@@ -28,7 +28,8 @@ body {
     background: none repeat scroll 0% 0% rgb(183, 227, 218);
     border: 1px solid rgb(98, 132, 125);
     float: left;
-    padding: 40px 20px;
+    width: 60px;
+    padding: 20px 0;
     margin: 20px 20px 20px 0;
     font-weight:bold;
     font-size:125%;
