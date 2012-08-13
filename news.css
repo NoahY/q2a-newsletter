@@ -1,12 +1,11 @@
 body {
 }
 
-.header {
+.header,.footer {
     background: none repeat scroll 0% 0% rgb(247, 205, 125);
     border: 1px solid rgb(214, 174, 100);
     padding:40px;
 }
-
 .title {
 	text-align:center;
 	font-size:200%;
@@ -14,6 +13,8 @@ body {
 	margin-bottom:20px;
 }
 .intro {
+	text-align:center;
+	font-style:italic;
 }
 
 .news {
@@ -36,29 +37,26 @@ body {
     text-align:center;
 }
 
-hr {
+
+.parent-ref {
+	font-style:italic;
+}
+.question-title a,.parent-ref a, .header a { color:black;}
+
+.top-link{font-size:50%; color:green !important;}
+
+.question-title {
+	font-size:125%;
+	font-weight:bold;
+}
+
+hr, .question,.answer,.comment,.footer {
 	clear:both;
 }
 
 hr.inner {
 	color: #CCC;
 	background-color: #CCC;
-}
-
-.parent-ref {
-	font-style:italic;
-}
-.question-title a,.parent-ref a { color:black;}
-
-.top-link{font-size:50%; color:green !important;}
-
-.question-title {
-	font-size:150%;
-	font-weight:bold;
-}
-
-.question,.answer,.comment {
-	clear:both;
 }
 
 .question-content,.answer-content,.comment-content {

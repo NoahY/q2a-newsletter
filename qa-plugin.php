@@ -78,8 +78,9 @@
 					}
 
 					$anchor = qa_anchor('C', $post['postid']);
+					$purl = qa_path_html(qa_q_request($post['parentid'], $post['qtitle']), null, qa_opt('site_url'));
 					$url = qa_path_html(qa_q_request($post['parentid'], $post['qtitle']), null, qa_opt('site_url'),null,$anchor);					
-					$response = qa_lang_sub('newsletter/response_to_question',$post['qtitle']);
+					$response = qa_lang_sub('newsletter/response_to_question','<a href="'.$purl.'">'.$post['qtitle'].'</a>');
 					$response = str_replace('[url]',$url,$response);
 					
 					$one = str_replace('[parent-ref]',$response,qa_opt('news_plugin_template_answer'));
@@ -111,6 +112,7 @@
 						$parent = 'answer';
 						$title = $post['gtitle'];
 						$parentid = $post['gpostid'];
+						$aurl = qa_path_html(qa_q_request($post['parentid'], $title), null, qa_opt('site_url'),null,qa_anchor('A',$post['parentid']));
 					}
 					else {
 						$parent = 'question';
@@ -119,9 +121,13 @@
 					}
 					
 					$anchor = qa_anchor('C', $post['postid']);
-					$url = qa_path_html(qa_q_request($parentid, $title), null, qa_opt('site_url'),null,$anchor);					
-					$response = qa_lang_sub('newsletter/response_to_'.$parent,$title);
+					$purl = qa_path_html(qa_q_request($parentid, $title), null, qa_opt('site_url'));
+					$url = qa_path_html(qa_q_request($parentid, $title), null, qa_opt('site_url'),null,$anchor);
+					$response = qa_lang_sub('newsletter/response_to_'.$parent,'<a href="'.$purl.'">'.$title.'</a>');
 					$response = str_replace('[url]',$url,$response);
+					if(isset($aurl))
+						$response = str_replace('[aurl]',$aurl,$response);
+						
 
 					$one = str_replace('[parent-ref]',$response,qa_opt('news_plugin_template_comment'));
 					$one = str_replace('[anchor]','comment'.$post['postid'],$one);
@@ -140,9 +146,11 @@
 			// misc subs
 			
 			$news = str_replace('[intro]',qa_lang('newsletter/intro'),$news);
+			$news = str_replace('[footer]',qa_lang('newsletter/footer'),$news);
 
 			$news = str_replace('[site-title]',qa_opt('site_title'),$news);
 			$news = str_replace('[site-url]',qa_opt('site_url'),$news);
+			$news = str_replace('[last-date]',date('M j, Y',qa_opt('news_plugin_send_last')),$news);
 			$news = str_replace('[date]',date('M j, Y'),$news);
 			$news = str_replace('[days]',qa_opt('news_plugin_send_days'),$news);
 			$news = str_replace('[profile-url]',qa_path('my-profile'),$news);
