@@ -5,7 +5,7 @@
 			if($requestlower && $requestlower === 'my-profile') {
 				$userid = qa_get_logged_in_userid();
 				if(!$userid)
-					qa_redirect('login');
+					qa_redirect();
 
 				$handles = qa_userids_to_handles(array($userid));
 				$handle = $handles[$userid];
