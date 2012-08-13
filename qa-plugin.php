@@ -196,13 +196,32 @@
 				'newsletter','1'
 				)
 			);
-			require_once QA_INCLUDE_DIR.'qa-app-emails.php';
+			require_once QA_INCLUDE_DIR.'qa-class.phpmailer.php';
 
 			$handles = qa_userids_to_handles($users);
 			
 			foreach($users as $userid) {
 				$handle = $handles[$userid];
-				qa_send_notification($userid, '@', $handle, qa_opt('site_title').' '.qa_lang('newsletter/newsletter'), $news, array()); // $userid, $email, $handle, $subject, $body, $subs
+
+				if (QA_FINAL_EXTERNAL_USERS) {
+					$email=qa_get_user_email($userid);
+				
+				} else {
+					$useraccount=qa_db_select_with_pending(
+						qa_db_user_account_selectspec($userid, true)
+					);
+					$email=@$useraccount['email'];
+				}
+				
+				qa_send_email(array(
+					'fromemail' => qa_opt('from_email'),
+					'fromname' => qa_opt('site_title'),
+					'toemail' => $email,
+					'toname' => $handle,
+					'subject' => qa_opt('site_title').' '.qa_lang('newsletter/newsletter'),
+					'body' => $news,
+					'html' => true,
+				));
 			}
 			error_log('Q2A Newsletter Sent on '.date('M j, Y \a\t H\:i\:s'));
 		}
