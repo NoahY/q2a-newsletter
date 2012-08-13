@@ -80,8 +80,8 @@
 					qa_opt('news_plugin_template_comment',qa_post_text('news_plugin_template_comment'));
 					qa_opt('news_plugin_template_votes',qa_post_text('news_plugin_template_votes'));
 					
-					if(qa_clicked('news_plugin_process') && qa_opt('news_plugin_static'))
-						$ok = qa_news_plugin_createNewsletter(false,false);
+					if(qa_clicked('news_plugin_process'))
+						$ok = qa_news_plugin_createNewsletter();
 					else
 						$ok = qa_lang('admin/options_saved');
 				}
