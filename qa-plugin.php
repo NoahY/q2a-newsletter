@@ -197,9 +197,14 @@
 				)
 			);
 			require_once QA_INCLUDE_DIR.'qa-app-emails.php';
+
+			$handles = qa_userids_to_handles($users);
 			
-			foreach($users as $userid)
-				qa_send_notification($userid, '@', qa_get_user_name($userid), qa_opt('site_title').' '.qa_lang('newsletter/newsletter'), $news, array()); // $userid, $email, $handle, $subject, $body, $subs
+			foreach($users as $userid) {
+				$handle = $handles[$userid];
+				qa_send_notification($userid, '@', $handle, qa_opt('site_title').' '.qa_lang('newsletter/newsletter'), $news, array()); // $userid, $email, $handle, $subject, $body, $subs
+			}
+			error_log('Q2A Newsletter Sent on '.date('M j, Y \a\t H\:i\:s'));
 		}
 	
 		function qa_news_plugin_create_pdf($return=false) {

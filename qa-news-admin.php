@@ -79,7 +79,6 @@
 					qa_opt('news_plugin_template_comment',qa_post_text('news_plugin_template_comment'));
 					qa_opt('news_plugin_template_votes',qa_post_text('news_plugin_template_votes'));
 						
-					qa_error_log($_POST);
 					if(qa_clicked('news_plugin_send_button'))
 						$ok = qa_news_plugin_createNewsletter(true);
 					else if(qa_clicked('news_plugin_process_button'))
