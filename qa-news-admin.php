@@ -51,7 +51,7 @@
 				
 				$ok = null;
 				
-				if (qa_clicked('news_plugin_process') || qa_clicked('news_plugin_save')) {
+				if (qa_clicked('news_plugin_process_button') || qa_clicked('news_plugin_send_button') || qa_clicked('news_plugin_save_button')) {
 			
 					qa_opt('news_plugin_active',(bool)qa_post_text('news_plugin_active'));
 					
@@ -78,22 +78,23 @@
 					qa_opt('news_plugin_template_answer',qa_post_text('news_plugin_template_answer'));
 					qa_opt('news_plugin_template_comment',qa_post_text('news_plugin_template_comment'));
 					qa_opt('news_plugin_template_votes',qa_post_text('news_plugin_template_votes'));
-					
-					if(qa_clicked('news_plugin_send'))
+						
+					qa_error_log($_POST);
+					if(qa_clicked('news_plugin_send_button'))
 						$ok = qa_news_plugin_createNewsletter(true);
-					else if(qa_clicked('news_plugin_process'))
-						$ok = qa_news_plugin_createNewsletter();
+					else if(qa_clicked('news_plugin_process_button'))
+						$ok = qa_news_plugin_createNewsletter(false);
 					else
-						$ok = qa_lang('admin/options_saved');
+						$ok = qa_lang('admin/options_saved_button');
 				}
-				else if (qa_clicked('news_plugin_reset')) {
+				else if (qa_clicked('news_plugin_reset_button')) {
 					foreach($_POST as $i => $v) {
 						$def = $this->option_default($i);
 						if($def !== null) qa_opt($i,$def);
 					}
 					qa_opt('news_plugin_cron_rand', $this->option_default('news_plugin_cron_rand'));
 				}
-				else if (qa_clicked('news_plugin_reset_template')) {
+				else if (qa_clicked('news_plugin_reset_template_button')) {
 					foreach($_POST as $i => $v) {
 						if(strpos($i,'news_plugin_template') === 0 || $i == 'news_plugin_css') {
 							$def = $this->option_default($i);
@@ -267,23 +268,24 @@
 				'buttons' => array(
 					array(
 						'label' => qa_lang_html('admin/save_options_button'),
-						'tags' => 'NAME="news_plugin_save"',
+						'tags' => 'NAME="news_plugin_save_button"',
 					),
 					array(
 						'label' => 'Process',
-						'tags' => 'NAME="news_plugin_process"',
+						'tags' => 'NAME="news_plugin_process_button"',
 					),
 					array(
 						'label' => 'Send',
-						'tags' => 'NAME="news_plugin_send"',
+						'tags' => 'NAME="news_plugin_send_button"',
+						'note' => '<br/>',
 					),
                     array(
                         'label' => qa_lang_html('admin/reset_options_button'),
-                        'tags' => 'NAME="news_plugin_reset"',
+                        'tags' => 'NAME="news_plugin_reset_button"',
                     ),
                     array(
                         'label' => 'Reset template only',
-                        'tags' => 'NAME="news_plugin_reset_template"',
+                        'tags' => 'NAME="news_plugin_reset_template_button"',
                     ),
 				),
 			);

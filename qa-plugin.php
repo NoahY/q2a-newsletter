@@ -28,8 +28,8 @@
 		qa_register_plugin_phrases('qa-news-lang-*.php', 'newsletter');
 
 
-		function qa_news_plugin_createNewsletter($send=false) {
-
+		function qa_news_plugin_createNewsletter($send) {
+			qa_error_log($send);
 			$news = qa_opt('news_plugin_template');
 			
 			// static replacements
@@ -37,7 +37,7 @@
 			$news = str_replace('[css]',qa_opt('news_plugin_css'),$news);
 			
 			if(qa_opt('news_plugin_max_q') > 0) {
-				$selectspec="SELECT postid, BINARY title AS title, BINARY content AS content, format, netvotes FROM ^posts WHERE type='Q' AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= created ORDER BY netvotes DESC, created ASC LIMIT ".(int)qa_opt('news_plugin_max_q');
+				$selectspec="SELECT postid, BINARY title AS title, BINARY content AS content, format, netvotes, userid FROM ^posts WHERE type='Q' AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= created ORDER BY netvotes DESC, created ASC LIMIT ".(int)qa_opt('news_plugin_max_q');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
@@ -58,12 +58,17 @@
 					
 					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
 					$one = str_replace('[voting]',$votes,$one);
+					
+					$uid = $post['userid'];
+					$handles = qa_userids_to_handles(array($uid));
+					$handle = $handles[$uid];
+					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="user/'.$handle.'">'.$handle.'</a>'),$one);
 					 
 					$qhtml[] = $one;
 				}
 			}
 			if(qa_opt('news_plugin_max_a') > 0) {
-				$selectspec="SELECT a.postid AS postid, a.parentid AS parentid, BINARY a.content AS content, a.format AS format, a.netvotes AS netvotes, q.title AS qtitle FROM ^posts AS q, ^posts AS a WHERE a.type='A' AND q.postid=a.parentid AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= a.created ORDER BY a.netvotes DESC, a.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
+				$selectspec="SELECT a.postid AS postid, a.parentid AS parentid, BINARY a.content AS content, a.format AS format, a.netvotes AS netvotes, a.userid as userid, q.title AS qtitle FROM ^posts AS q, ^posts AS a WHERE a.type='A' AND q.postid=a.parentid AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= a.created ORDER BY a.netvotes DESC, a.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
@@ -89,12 +94,17 @@
 
 					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
 					$one = str_replace('[voting]',$votes,$one);
+					
+					$uid = $post['userid'];
+					$handles = qa_userids_to_handles(array($uid));
+					$handle = $handles[$uid];
+					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="user/'.$handle.'">'.$handle.'</a>'),$one);
 					 
 					$ahtml[] = $one;
 				}
 			}
 			if(qa_opt('news_plugin_max_c') > 0) {
-				$selectspec="SELECT c.postid AS postid, c.parentid AS parentid, BINARY c.content AS content, c.format AS format, c.netvotes AS netvotes, p.title AS ptitle, p.parentid AS gpostid, g.title AS gtitle FROM ^posts AS c INNER JOIN ^posts AS p ON c.type='C' AND p.postid=c.parentid AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= c.created LEFT JOIN ^posts AS g ON g.postid=p.parentid AND g.type='Q' ORDER BY c.netvotes DESC, c.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
+				$selectspec="SELECT c.postid AS postid, c.parentid AS parentid, BINARY c.content AS content, c.format AS format, c.netvotes AS netvotes, c.userid as userid, p.title AS ptitle, p.parentid AS gpostid, g.title AS gtitle FROM ^posts AS c INNER JOIN ^posts AS p ON c.type='C' AND p.postid=c.parentid AND DATE_SUB(CURDATE(),INTERVAL # DAY) <= c.created LEFT JOIN ^posts AS g ON g.postid=p.parentid AND g.type='Q' ORDER BY c.netvotes DESC, c.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
@@ -135,7 +145,12 @@
 
 					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
 					$one = str_replace('[voting]',$votes,$one);
-					 
+					
+					$uid = $post['userid'];
+					$handles = qa_userids_to_handles(array($uid));
+					$handle = $handles[$uid];
+					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="user/'.$handle.'">'.$handle.'</a>'),$one);
+										 
 					$chtml[]= $one;
 				}
 			}
