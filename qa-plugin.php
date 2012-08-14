@@ -29,7 +29,6 @@
 
 
 		function qa_news_plugin_createNewsletter($send) {
-			qa_error_log($send);
 			$news = qa_opt('news_plugin_template');
 			
 			// static replacements
