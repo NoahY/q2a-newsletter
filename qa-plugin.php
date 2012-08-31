@@ -5,7 +5,7 @@
         Plugin URI: https://github.com/NoahY/q2a-newsletter
         Plugin Update Check URI: https://github.com/NoahY/q2a-newsletter/raw/master/qa-plugin.php
         Plugin Description: Sends out a regularly scheduled newsletter with top questions and answers
-        Plugin Version: 0.1
+        Plugin Version: 0.2
         Plugin Date: 2012-08-12
         Plugin Author: NoahY
         Plugin Author URI:                              
@@ -63,7 +63,7 @@
 					$uid = $post['userid'];
 					$handles = qa_userids_to_handles(array($uid));
 					$handle = $handles[$uid];
-					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="user/'.$handle.'">'.$handle.'</a>'),$one);
+					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="'.qa_opt('site_url').'user/'.$handle.'">'.$handle.'</a>'),$one);
 					 
 					$qhtml[] = $one;
 				}
@@ -99,7 +99,7 @@
 					$uid = $post['userid'];
 					$handles = qa_userids_to_handles(array($uid));
 					$handle = $handles[$uid];
-					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="user/'.$handle.'">'.$handle.'</a>'),$one);
+					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="'.qa_opt('site_url').'user/'.$handle.'">'.$handle.'</a>'),$one);
 					 
 					$ahtml[] = $one;
 				}
@@ -150,7 +150,7 @@
 					$uid = $post['userid'];
 					$handles = qa_userids_to_handles(array($uid));
 					$handle = $handles[$uid];
-					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="user/'.$handle.'">'.$handle.'</a>'),$one);
+					$one = str_replace('[meta]',qa_lang_sub('newsletter/meta','<a href="'.qa_opt('site_url').'user/'.$handle.'">'.$handle.'</a>'),$one);
 										 
 					$chtml[]= $one;
 				}
