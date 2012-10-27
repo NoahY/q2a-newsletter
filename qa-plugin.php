@@ -5,7 +5,7 @@
         Plugin URI: https://github.com/NoahY/q2a-newsletter
         Plugin Update Check URI: https://github.com/NoahY/q2a-newsletter/raw/master/qa-plugin.php
         Plugin Description: Sends out a regularly scheduled newsletter with top questions and answers
-        Plugin Version: 0.2
+        Plugin Version: 0.3
         Plugin Date: 2012-08-12
         Plugin Author: NoahY
         Plugin Author URI:                              
@@ -38,7 +38,7 @@
 				$lastdate = time()-qa_opt('news_plugin_send_days')*24*60*60;
 			
 			if(qa_opt('news_plugin_max_q') > 0) {
-				$selectspec="SELECT postid, BINARY title AS title, BINARY content AS content, format, netvotes, userid FROM ^posts WHERE type='Q' AND FROM_UNIXTIME(#) <= created ORDER BY netvotes DESC, created ASC LIMIT ".(int)qa_opt('news_plugin_max_q');
+				$selectspec="SELECT postid, BINARY title AS title, BINARY content AS content, format, netvotes, userid FROM ^posts WHERE type='Q' AND FROM_UNIXTIME(#) <= created AND netvotes > 0 ORDER BY netvotes DESC, created ASC LIMIT ".(int)qa_opt('news_plugin_max_q');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
@@ -69,7 +69,7 @@
 				}
 			}
 			if(qa_opt('news_plugin_max_a') > 0) {
-				$selectspec="SELECT a.postid AS postid, a.parentid AS parentid, BINARY a.content AS content, a.format AS format, a.netvotes AS netvotes, a.userid as userid, q.title AS qtitle FROM ^posts AS q, ^posts AS a WHERE a.type='A' AND q.postid=a.parentid AND FROM_UNIXTIME(#) <= a.created ORDER BY a.netvotes DESC, a.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
+				$selectspec="SELECT a.postid AS postid, a.parentid AS parentid, BINARY a.content AS content, a.format AS format, a.netvotes AS netvotes, a.userid as userid, q.title AS qtitle FROM ^posts AS q, ^posts AS a WHERE a.type='A' AND q.postid=a.parentid AND FROM_UNIXTIME(#) <= a.created AND a.netvotes > 0 ORDER BY a.netvotes DESC, a.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
@@ -105,7 +105,7 @@
 				}
 			}
 			if(qa_opt('news_plugin_max_c') > 0) {
-				$selectspec="SELECT c.postid AS postid, c.parentid AS parentid, BINARY c.content AS content, c.format AS format, c.netvotes AS netvotes, c.userid as userid, p.title AS ptitle, p.parentid AS gpostid, g.title AS gtitle FROM ^posts AS c INNER JOIN ^posts AS p ON c.type='C' AND p.postid=c.parentid AND FROM_UNIXTIME(#) <= c.created LEFT JOIN ^posts AS g ON g.postid=p.parentid AND g.type='Q' ORDER BY c.netvotes DESC, c.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
+				$selectspec="SELECT c.postid AS postid, c.parentid AS parentid, BINARY c.content AS content, c.format AS format, c.netvotes AS netvotes, c.userid as userid, p.title AS ptitle, p.parentid AS gpostid, g.title AS gtitle FROM ^posts AS c INNER JOIN ^posts AS p ON c.type='C' AND p.postid=c.parentid AND FROM_UNIXTIME(#) <= c.created LEFT JOIN ^posts AS g ON g.postid=p.parentid AND g.type='Q' AND c.netvotes > 0 ORDER BY c.netvotes DESC, c.created ASC LIMIT ".(int)qa_opt('news_plugin_max_a');
 				
 				$sub = qa_db_query_sub(
 					$selectspec,
