@@ -26,6 +26,7 @@ Installation
    - To download directly, go to the `project page`_ and click **Download**
 
 #. navigate to your site, go to **Admin -> Plugins** on your q2a install, go to the "Newsletter" panel, select options, click "Save".
+#. If you want the newsletter to actually send out, you will need to set up a cron job to access the page (e.g. via wget).  The cron url is in the admin/plugins section.
 
 .. _Question2Answer: http://www.question2answer.org/install.php
 .. _git: http://git-scm.com/

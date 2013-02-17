@@ -5,7 +5,7 @@
         Plugin URI: https://github.com/NoahY/q2a-newsletter
         Plugin Update Check URI: https://raw.github.com/NoahY/q2a-newsletter/master/qa-plugin.php
         Plugin Description: Sends out a regularly scheduled newsletter with top questions and answers
-        Plugin Version: 0.3
+        Plugin Version: 0.4
         Plugin Date: 2012-08-12
         Plugin Author: NoahY
         Plugin Author URI:                              
