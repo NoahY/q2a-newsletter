@@ -5,7 +5,7 @@
         Plugin URI: https://github.com/NoahY/q2a-newsletter
         Plugin Update Check URI: https://raw.github.com/NoahY/q2a-newsletter/master/qa-plugin.php
         Plugin Description: Sends out a regularly scheduled newsletter with top questions and answers
-        Plugin Version: 0.4
+        Plugin Version: 0.5
         Plugin Date: 2012-08-12
         Plugin Author: NoahY
         Plugin Author URI:                              
@@ -86,11 +86,10 @@
 					$anchor = qa_anchor('C', $post['postid']);
 					$purl = qa_path_html(qa_q_request($post['parentid'], $post['qtitle']), null, qa_opt('site_url'));
 					$url = qa_path_html(qa_q_request($post['parentid'], $post['qtitle']), null, qa_opt('site_url'),null,$anchor);					
-					$response = qa_lang_sub('newsletter/response_to_question','<a href="'.$purl.'">'.$post['qtitle'].'</a>');
+					$response = qa_lang_sub('newsletter/response_to_question','<a name="answer'.$post['postid'].'" href="'.$purl.'">'.$post['qtitle'].'</a>');
 					$response = str_replace('[url]',$url,$response);
 					
 					$one = str_replace('[parent-ref]',$response,qa_opt('news_plugin_template_answer'));
-					$one = str_replace('[anchor]','answer'.$post['postid'],$one);
 					$one = str_replace('[answer]',$content,$one);
 
 					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
@@ -134,14 +133,13 @@
 					$anchor = qa_anchor('C', $post['postid']);
 					$purl = qa_path_html(qa_q_request($parentid, $title), null, qa_opt('site_url'));
 					$url = qa_path_html(qa_q_request($parentid, $title), null, qa_opt('site_url'),null,$anchor);
-					$response = qa_lang_sub('newsletter/response_to_'.$parent,'<a href="'.$purl.'">'.$title.'</a>');
+					$response = qa_lang_sub('newsletter/response_to_'.$parent,'<a name="comment'.$post['postid'].'" href="'.$purl.'">'.$title.'</a>');
 					$response = str_replace('[url]',$url,$response);
 					if(isset($aurl))
 						$response = str_replace('[aurl]',$aurl,$response);
 						
 
 					$one = str_replace('[parent-ref]',$response,qa_opt('news_plugin_template_comment'));
-					$one = str_replace('[anchor]','comment'.$post['postid'],$one);
 					$one = str_replace('[comment]',$content,$one);
 
 					$votes = str_replace('[number]',($post['netvotes']>0?'+':($post['netvotes']<0?'-':'')).$post['netvotes'],qa_opt('news_plugin_template_votes'));
